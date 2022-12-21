@@ -1,4 +1,4 @@
-package DiscordApi;
+package KyleYannelli.DiscordBots.KLogger.DiscordApi;
 
 import org.javacord.api.entity.permission.PermissionType;
 import org.javacord.api.interaction.SlashCommandBuilder;

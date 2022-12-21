@@ -1,6 +1,6 @@
-package JSONCommandParser;
+package KyleYannelli.DiscordBots.KLogger.Parsers.JSONCommandParser;
 
-import DiscordApi.Command;
+import KyleYannelli.DiscordBots.KLogger.DiscordApi.Command;
 import org.javacord.api.interaction.SlashCommandBuilder;
 import org.javacord.api.interaction.SlashCommandOption;
 import org.javacord.api.interaction.SlashCommandOptionType;

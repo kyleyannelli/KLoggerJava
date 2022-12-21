@@ -1,5 +1,7 @@
-import DiscordApi.Bot;
-import JSONCommandParser.JSONCommandParser;
+package KyleYannelli.DiscordBots.KLogger;
+
+import KyleYannelli.DiscordBots.KLogger.DiscordApi.Bot;
+import KyleYannelli.DiscordBots.KLogger.Parsers.JSONCommandParser.JSONCommandParser;
 
 import java.io.IOException;
 
