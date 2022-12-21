@@ -1,0 +1,27 @@
+[
+    {
+      "name" : "turn-off",
+      "forAdmins" : true,
+      "description" : "Turns off all logging for this guild",
+      "options" : []
+    },
+    {
+      "name" : "turn-on",
+      "forAdmins" : true,
+      "description" : "Turns on all logging for this guild",
+      "options" : []
+    },
+    {
+      "name" : "set-log-channel",
+      "forAdmins" : true,
+      "description" : "Sets the channel to log for this guild. If it doesn't exist, it will be created.",
+      "options" : [
+        {
+          "name" : "channel",
+          "description" : "The channel to log to",
+          "dataType" : "String",
+          "required" : true
+        }
+      ]
+    }
+]

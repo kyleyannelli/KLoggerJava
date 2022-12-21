@@ -6,6 +6,7 @@ import org.javacord.api.DiscordApiBuilder;
 import org.javacord.api.interaction.SlashCommandBuilder;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 
 public class Bot {
     private final DiscordApi discordApi;
@@ -24,7 +25,7 @@ public class Bot {
     public boolean deleteOldCommandsAndAddNew(ArrayList<SlashCommandBuilder> slashCommandArrayList) {
         try {
             // bulk overwrite all commands by passing empty set
-            this.discordApi.bulkOverwriteGlobalApplicationCommands(null).join();
+            this.discordApi.bulkOverwriteGlobalApplicationCommands(new HashSet<>()).join();
 
             // add new commands
             for(SlashCommandBuilder slashCommandBuilder : slashCommandArrayList) {
