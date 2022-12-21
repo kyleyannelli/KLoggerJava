@@ -1,6 +1,7 @@
 package KyleYannelli.DiscordBots.KLogger;
 
 import KyleYannelli.DiscordBots.KLogger.DiscordApi.Bot;
+import KyleYannelli.DiscordBots.KLogger.DiscordApi.Handlers.CommandHandlers.TurnOffCommandHandler;
 import KyleYannelli.DiscordBots.KLogger.Parsers.CommandParser.JSONCommandParser;
 
 import java.io.IOException;
@@ -12,5 +13,7 @@ public class RunBot {
         if(!bot.deleteOldCommandsAndAddNew(jsonCommandParser.parse()))
             throw new IOException("Error adding commands. This is likely an issue with the JSON file. Please check the JSON file and try again.\n" +
                     "If you are sure the JSON file is correct, please contact the developer.");
+        TurnOffCommandHandler turnOffCommandHandler = new TurnOffCommandHandler();
+        turnOffCommandHandler.handle(bot.getDiscordApi());
     }
 }

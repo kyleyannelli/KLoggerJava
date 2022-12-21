@@ -38,4 +38,8 @@ public class Bot {
             return false;
         }
     }
+
+    public DiscordApi getDiscordApi() {
+        return this.discordApi;
+    }
 }
