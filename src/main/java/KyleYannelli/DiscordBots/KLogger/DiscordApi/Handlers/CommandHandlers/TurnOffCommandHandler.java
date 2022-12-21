@@ -4,6 +4,8 @@ import org.javacord.api.DiscordApi;
 import org.javacord.api.event.interaction.SlashCommandCreateEvent;
 import org.javacord.api.interaction.callback.InteractionOriginalResponseUpdater;
 
+import static java.lang.Thread.sleep;
+
 public class TurnOffCommandHandler implements CommandHandler {
     private final String COMMAND_NAME = "turn-off";
     private DiscordApi discordApi;
@@ -29,7 +31,18 @@ public class TurnOffCommandHandler implements CommandHandler {
 
     @Override
     public void handleInteractionAcceptance(InteractionOriginalResponseUpdater interactionAcceptance) {
-
+        // run non-blocking
+        Thread thread = new Thread(() -> {
+            interactionAcceptance.setContent("Turning off, please wait...").update();
+            try {
+                sleep(5000);
+            } catch (InterruptedException e) {
+                throw new RuntimeException(e);
+            }
+            interactionAcceptance.setContent("Turned off.").update();
+            this.dispose();
+        });
+        thread.start();
     }
 
     @Override
