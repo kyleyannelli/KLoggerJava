@@ -1,0 +1,8 @@
+#!/bin/sh
+docker build -t k_logger_bot_beta .
+# check if script was run with -d flag
+if [[ $1 == "-d" ]]; then
+    docker run -d k_logger_bot_beta
+else
+    docker run k_logger_bot_beta
+fi
