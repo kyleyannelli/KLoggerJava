@@ -1,15 +1,13 @@
 package KyleYannelli.DiscordBots.KLogger;
 
 import KyleYannelli.DiscordBots.KLogger.Models.Guild;
-import KyleYannelli.DiscordBots.KLogger.Models.Model;
+import KyleYannelli.DiscordBots.KLogger.Parsers.GuildsParser.GuildsParser;
 
 import java.io.IOException;
+import java.util.ArrayList;
 
 public class Testing {
     public static void main(String[] args) throws IOException {
-        Model model = new Model("BaseModel");
-        model.save();
-        Guild guild = new Guild(123456789, true);
-        guild.save();
+        ArrayList<Guild> guilds = GuildsParser.parseGuilds();
     }
 }

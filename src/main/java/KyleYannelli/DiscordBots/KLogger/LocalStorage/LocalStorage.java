@@ -29,14 +29,20 @@ public class LocalStorage {
 
     public static void appendJSONArrayToFile(JSONArray jsonArray, String fileNameWithExtension) throws IOException {
         if(fileExists(DEFAULT_FILE_PATH + fileNameWithExtension)) {
-            String jsonString = new String(Files.readAllBytes(Paths.get(DEFAULT_FILE_PATH + fileNameWithExtension)));
+            String jsonString = loadFileToString(DEFAULT_FILE_PATH + fileNameWithExtension);
             JSONArray exisitingJSONArray = new JSONArray(jsonString);
             JSONArray mergedJSONArray = exisitingJSONArray.put(jsonArray);
             writeJSONArrayToFile(mergedJSONArray, fileNameWithExtension);
         }
         else {
-            writeJSONArrayToFile(jsonArray, fileNameWithExtension);
+            JSONArray fakerJSONArray = new JSONArray();
+            fakerJSONArray.put(jsonArray);
+            writeJSONArrayToFile(fakerJSONArray, fileNameWithExtension);
         }
+    }
+
+    public static String loadFileToString(String completeFilePath) throws IOException {
+        return new String(Files.readAllBytes(Paths.get(completeFilePath)));
     }
 
     private static void writeJSONArrayToFile(JSONArray jsonArray, String fileNameWithExtension) {

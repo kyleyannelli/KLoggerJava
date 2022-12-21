@@ -1,14 +1,13 @@
-package KyleYannelli.DiscordBots.KLogger.Parsers.JSONCommandParser;
+package KyleYannelli.DiscordBots.KLogger.Parsers.CommandParser;
 
 import KyleYannelli.DiscordBots.KLogger.DiscordApi.Command;
+import KyleYannelli.DiscordBots.KLogger.LocalStorage.LocalStorage;
 import org.javacord.api.interaction.SlashCommandBuilder;
 import org.javacord.api.interaction.SlashCommandOption;
 import org.javacord.api.interaction.SlashCommandOptionType;
 import org.json.JSONArray;
 
 import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Paths;
 import java.util.ArrayList;
 
 public class JSONCommandParser {
@@ -23,7 +22,7 @@ public class JSONCommandParser {
 
     public ArrayList<SlashCommandBuilder> parse() throws IOException {
         // load json from file path with org.json
-        String jsonString = new String(Files.readAllBytes(Paths.get(pathWithFileName)));
+        String jsonString = LocalStorage.loadFileToString(pathWithFileName);
         JSONArray commandsJsonArray = new JSONArray(jsonString);
 
         // create array list of slash command builders
