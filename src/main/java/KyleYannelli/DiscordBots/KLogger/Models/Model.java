@@ -8,11 +8,19 @@ import java.io.IOException;
 import java.util.HashMap;
 public class Model {
     private final String modelName;
+    private final long id;
 
-    public Model(String modelName) {
+    public Model(String modelName, long id) {
         this.modelName = modelName;
+        this.id = id;
     }
 
+    /**
+     * @Warning
+     * Using this method outside GuildHandler may result in unexpected behavior.
+     *  Consider using GuildHandler.updateGuild(Guild guild) instead if you are unsure.
+     * @throws IOException
+     */
     public void save() throws IOException {
         // create JSONArray
         JSONArray jsonArray = new JSONArray();
@@ -24,7 +32,7 @@ public class Model {
             jsonArray.put(keyValueJSONObject);
         }
         // write JSONArray to file
-        LocalStorage.appendJSONArrayToFile(jsonArray, modelName + ".json");
+        LocalStorage.overwriteJSONArrayToFile(jsonArray, id + "." + modelName.toLowerCase() + ".json");
     }
 
     public HashMap<String, Object> getDeclaredFields() {

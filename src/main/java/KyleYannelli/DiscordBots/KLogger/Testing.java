@@ -1,13 +1,15 @@
 package KyleYannelli.DiscordBots.KLogger;
 
+import KyleYannelli.DiscordBots.KLogger.DiscordApi.Handlers.ModelHandlers.GuildHandler;
 import KyleYannelli.DiscordBots.KLogger.Models.Guild;
-import KyleYannelli.DiscordBots.KLogger.Parsers.GuildsParser.GuildsParser;
 
 import java.io.IOException;
-import java.util.ArrayList;
 
 public class Testing {
-    public static void main(String[] args) throws IOException {
-        ArrayList<Guild> guilds = GuildsParser.parseGuilds();
+    public static void main(String[] args) throws IOException, InterruptedException {
+        Guild testGuildOne = new Guild(123456789, true);
+        Guild testGuildTwo = new Guild(987654321, true);
+        GuildHandler.updateGuild(testGuildOne);
+        GuildHandler.updateGuild(testGuildTwo);
     }
 }

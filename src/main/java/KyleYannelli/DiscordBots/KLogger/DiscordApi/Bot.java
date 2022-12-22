@@ -14,7 +14,6 @@ public class Bot {
         // get DISCORD_BOT_TOKEN from dotenv (.env located in root of project)
         String token = Dotenv.load().get("DISCORD_BOT_TOKEN");
 
-        // create a new kyleyannelli.discordbots.DiscordApi instance
         this.discordApi = new DiscordApiBuilder()
                 .setToken(token)
                 // since we are logging all activity we are requiring all intents

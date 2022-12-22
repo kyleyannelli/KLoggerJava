@@ -32,20 +32,16 @@ public class LocalStorage {
             String jsonString = loadFileToString(DEFAULT_FILE_PATH + fileNameWithExtension);
             JSONArray exisitingJSONArray = new JSONArray(jsonString);
             JSONArray mergedJSONArray = exisitingJSONArray.put(jsonArray);
-            writeJSONArrayToFile(mergedJSONArray, fileNameWithExtension);
+            overwriteJSONArrayToFile(mergedJSONArray, fileNameWithExtension);
         }
         else {
             JSONArray fakerJSONArray = new JSONArray();
             fakerJSONArray.put(jsonArray);
-            writeJSONArrayToFile(fakerJSONArray, fileNameWithExtension);
+            overwriteJSONArrayToFile(fakerJSONArray, fileNameWithExtension);
         }
     }
 
-    public static String loadFileToString(String completeFilePath) throws IOException {
-        return new String(Files.readAllBytes(Paths.get(completeFilePath)));
-    }
-
-    private static void writeJSONArrayToFile(JSONArray jsonArray, String fileNameWithExtension) {
+    public static void overwriteJSONArrayToFile(JSONArray jsonArray, String fileNameWithExtension) {
         // write JSONArray to file
         try (FileWriter file = new FileWriter(DEFAULT_FILE_PATH + fileNameWithExtension)) {
             file.write(jsonArray.toString());
@@ -53,5 +49,19 @@ public class LocalStorage {
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    public static String loadFileToString(String completeFilePath) throws IOException {
+        return new String(Files.readAllBytes(Paths.get(completeFilePath)));
+    }
+
+    public static void createFile(String fileNameWithExtension) throws IOException {
+        File file = new File(DEFAULT_FILE_PATH + fileNameWithExtension);
+        file.createNewFile();
+    }
+
+    public static void deleteFile(String fileNameWithExtension) throws IOException {
+        File file = new File(DEFAULT_FILE_PATH + fileNameWithExtension);
+        file.delete();
     }
 }
