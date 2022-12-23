@@ -1,5 +1,8 @@
 package KyleYannelli.DiscordBots.KLogger.DiscordApi;
 
+import KyleYannelli.DiscordBots.KLogger.DiscordApi.Events.GuildEvents;
+import KyleYannelli.DiscordBots.KLogger.DiscordApi.Handlers.CommandHandlers.TurnOffCommandHandler;
+import KyleYannelli.DiscordBots.KLogger.DiscordApi.Handlers.CommandHandlers.TurnOnCommandHandler;
 import io.github.cdimascio.dotenv.Dotenv;
 import org.javacord.api.DiscordApi;
 import org.javacord.api.DiscordApiBuilder;
@@ -19,6 +22,22 @@ public class Bot {
                 // since we are logging all activity we are requiring all intents
                 .setAllIntents()
                 .login().join();
+
+        // add event listeners
+        addListenersAndEventHandlers();
+    }
+
+    private void addListenersAndEventHandlers() {
+        // handle commands
+        TurnOffCommandHandler turnOffCommandHandler = new TurnOffCommandHandler();
+        turnOffCommandHandler.handle(discordApi);
+        TurnOnCommandHandler turnOnCommandHandler = new TurnOnCommandHandler();
+        turnOnCommandHandler.handle(discordApi);
+
+        // handle events
+        GuildEvents.handleJoinGuildEvent(discordApi);
+        GuildEvents.handleLeaveGuildEvent(discordApi);
+        GuildEvents.handleBotStartUp(discordApi);
     }
 
     public boolean deleteOldCommandsAndAddNew(ArrayList<SlashCommandBuilder> slashCommandArrayList) {

@@ -9,8 +9,8 @@ import org.javacord.api.interaction.callback.InteractionOriginalResponseUpdater;
 
 import java.io.IOException;
 
-public class TurnOffCommandHandler implements CommandHandler {
-    private final String COMMAND_NAME = "turn-off";
+public class TurnOnCommandHandler implements CommandHandler {
+    private final String COMMAND_NAME = "turn-on";
     private DiscordApi discordApi;
     @Override
     public void handle(DiscordApi discordApi) {
@@ -36,14 +36,14 @@ public class TurnOffCommandHandler implements CommandHandler {
     public void handleInteractionAcceptance(InteractionOriginalResponseUpdater interactionAcceptance, Interaction commandInteraction) {
         // run non-blocking
         Thread thread = new Thread(() -> {
-            // notify user that bot is going to stop listening for interactions/changes on their guild
-            interactionAcceptance.setContent("Turning off, please wait...").update();
-            
-            Guild guild = new Guild(commandInteraction.getServer().get().getId(), false);
+            // notify user that bot is going to start listening for interactions/changes on their guild
+            interactionAcceptance.setContent("Turning on, please wait...").update();
+
+            Guild guild = new Guild(commandInteraction.getServer().get().getId(), true);
 
             try {
                 GuildHandler.updateGuild(guild);
-                interactionAcceptance.setContent("Turned off for this guild.\n" +
+                interactionAcceptance.setContent("Turned on for this guild.\n" +
                         "Reminder: k_logger does not store any information.\n" +
                         "if you would like to delete the \"logs\", then use /nuke or delete the logs channel :)").update();
             } catch (IOException e) {
@@ -61,6 +61,6 @@ public class TurnOffCommandHandler implements CommandHandler {
 
     @Override
     public void dispose() {
-        this.discordApi = null;
+
     }
 }
