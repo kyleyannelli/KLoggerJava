@@ -1,4 +1,4 @@
-package KyleYannelli.DiscordBots.KLogger.Parsers.CommandParser;
+package KyleYannelli.DiscordBots.KLogger.Parsers;
 
 import KyleYannelli.DiscordBots.KLogger.DiscordApi.Command;
 import KyleYannelli.DiscordBots.KLogger.LocalStorage.LocalStorage;

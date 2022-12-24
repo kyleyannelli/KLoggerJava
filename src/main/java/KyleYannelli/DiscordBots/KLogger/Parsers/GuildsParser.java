@@ -1,6 +1,8 @@
-package KyleYannelli.DiscordBots.KLogger.Parsers.GuildsParser;
+package KyleYannelli.DiscordBots.KLogger.Parsers;
 
+import KyleYannelli.DiscordBots.KLogger.DiscordApi.Handlers.ModelHandlers.GuildHandler;
 import KyleYannelli.DiscordBots.KLogger.LocalStorage.LocalStorage;
+import KyleYannelli.DiscordBots.KLogger.Models.Channel;
 import KyleYannelli.DiscordBots.KLogger.Models.Guild;
 import org.json.JSONArray;
 
@@ -16,14 +18,19 @@ public class GuildsParser {
         for(int i = 0; i < guildsJsonArray.length(); i++){
             Long currentGuildId = guildsJsonArray.getJSONArray(i).getJSONObject(0).getLong("GuildDiscordId");
             Boolean currentGuildIsLogging = guildsJsonArray.getJSONArray(i).getJSONObject(1).getBoolean("IsLogging");
-            Guild currentGuild = new Guild(currentGuildId, currentGuildIsLogging);
+            Channel currentGuildLoggingChannel = new Channel(guildsJsonArray.getJSONArray(i).getJSONObject(2).getLong("LoggingChannelDiscordId"));
+            Guild currentGuild = new Guild(currentGuildId, currentGuildIsLogging, currentGuildLoggingChannel);
             guilds.add(currentGuild);
         }
         return guilds;
     }
 
-    public static Guild parseGuild(long guildId) throws IOException {
+    public static Guild parseGuild(long guildId) throws IOException, InterruptedException {
         String filePath = folderPath + guildId + ".guild.json";
+
+        while(!GuildHandler.canUseGuild(guildId)); // wait until guild is available
+
+
         JSONArray guildJsonArray = new JSONArray(LocalStorage.loadFileToString(filePath));
         Long currentGuildId = guildJsonArray.getJSONArray(0).getJSONObject(0).getLong("GuildDiscordId");
         Boolean currentGuildIsLogging = guildJsonArray.getJSONArray(0).getJSONObject(1).getBoolean("IsLogging");

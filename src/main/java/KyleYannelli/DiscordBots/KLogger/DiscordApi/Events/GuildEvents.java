@@ -1,6 +1,8 @@
 package KyleYannelli.DiscordBots.KLogger.DiscordApi.Events;
 
+import KyleYannelli.DiscordBots.KLogger.DiscordApi.Handlers.ApiHandlers.ChannelApiHandler;
 import KyleYannelli.DiscordBots.KLogger.DiscordApi.Handlers.ModelHandlers.GuildHandler;
+import KyleYannelli.DiscordBots.KLogger.Models.Channel;
 import KyleYannelli.DiscordBots.KLogger.Models.Guild;
 import org.javacord.api.DiscordApi;
 
@@ -25,6 +27,9 @@ public class GuildEvents {
             System.out.println("Joined guild: " + event.getServer().getName() + " Saving guild...");
             Guild joinedGuild = new Guild(event.getServer().getId(), true);
             try {
+                long createdChannelId = ChannelApiHandler.createLogChannel(api, joinedGuild.getId(), "logs");
+                Channel loggingChannel = new Channel(createdChannelId);
+                joinedGuild.setLoggingChannel(loggingChannel);
                 // remember to update guild, using Guild save method is unsafe in direct use
                 GuildHandler.updateGuild(joinedGuild);
             } catch (IOException | InterruptedException e) {

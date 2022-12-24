@@ -19,7 +19,7 @@
         {
           "name" : "channel",
           "description" : "The channel to log to",
-          "dataType" : "String",
+          "dataType" : "channel",
           "required" : true
         }
       ]

@@ -69,6 +69,13 @@ public class GuildHandler {
         return !guildFileOpen(guild.getId());
     }
 
+    public static boolean canUseGuild(long guildId) throws InterruptedException {
+        // generate random number between 100 and 1000
+        int randomWait = (int) (Math.random() * 900) + 100;
+        sleep(randomWait);
+        return !guildFileOpen(guildId);
+    }
+
     public static boolean guildFileOpen(long guildId) {
         return LocalStorage.fileExists("src/main/resources/" + guildId + ".guild.json.block");
     }

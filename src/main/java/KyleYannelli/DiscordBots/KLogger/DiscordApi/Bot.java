@@ -1,6 +1,7 @@
 package KyleYannelli.DiscordBots.KLogger.DiscordApi;
 
 import KyleYannelli.DiscordBots.KLogger.DiscordApi.Events.GuildEvents;
+import KyleYannelli.DiscordBots.KLogger.DiscordApi.Handlers.CommandHandlers.SetLogChannelCommandHandler;
 import KyleYannelli.DiscordBots.KLogger.DiscordApi.Handlers.CommandHandlers.TurnOffCommandHandler;
 import KyleYannelli.DiscordBots.KLogger.DiscordApi.Handlers.CommandHandlers.TurnOnCommandHandler;
 import io.github.cdimascio.dotenv.Dotenv;
@@ -31,8 +32,12 @@ public class Bot {
         // handle commands
         TurnOffCommandHandler turnOffCommandHandler = new TurnOffCommandHandler();
         turnOffCommandHandler.handle(discordApi);
+
         TurnOnCommandHandler turnOnCommandHandler = new TurnOnCommandHandler();
         turnOnCommandHandler.handle(discordApi);
+
+        SetLogChannelCommandHandler setLogChannelCommandHandler = new SetLogChannelCommandHandler();
+        setLogChannelCommandHandler.handle(discordApi);
 
         // handle events
         GuildEvents.handleJoinGuildEvent(discordApi);
