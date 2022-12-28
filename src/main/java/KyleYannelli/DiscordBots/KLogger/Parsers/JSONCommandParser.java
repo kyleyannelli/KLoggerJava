@@ -66,27 +66,20 @@ public class JSONCommandParser {
 
     private SlashCommandOptionType parseOptionTypeFromString(String typeString) {
         switch (typeString.toUpperCase()) {
-            case "STRING" -> {
+            case "STRING":
                 return SlashCommandOptionType.STRING;
-            }
-            case "LONG" -> {
+            case "LONG":
                 return SlashCommandOptionType.LONG;
-            }
-            case "BOOLEAN" -> {
+            case "BOOLEAN":
                 return SlashCommandOptionType.BOOLEAN;
-            }
-            case "DECIMAL" -> {
+            case "DECIMAL":
                 return SlashCommandOptionType.DECIMAL;
-            }
-            case "USER" -> {
+            case "USER":
                 return SlashCommandOptionType.USER;
-            }
-            case "CHANNEL" -> {
+            case "CHANNEL":
                 return SlashCommandOptionType.CHANNEL;
-            }
-            case "ROLE" -> {
+            case "ROLE":
                 return SlashCommandOptionType.ROLE;
-            }
         }
         throw new IllegalArgumentException("Invalid option type in JSON file. Please check your formatting with the documentation.");
     }
