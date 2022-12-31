@@ -64,9 +64,9 @@ public class GuildHandler {
     }
 
     public static boolean canUseGuild(Guild guild) throws InterruptedException {
-        // generate random number between 100 and 1000
-        int randomWait = (int) (Math.random() * 900) + 100;
-        sleep(randomWait);
+        // generate random number between 10 and 200
+        int randomWaitTimeMilli = (int) (Math.random() * 190) + 10;
+        sleep(randomWaitTimeMilli);
         return !guildFileOpen(guild.getId());
     }
 
