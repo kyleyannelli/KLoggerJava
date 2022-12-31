@@ -2,6 +2,7 @@ package KyleYannelli.DiscordBots.KLogger.DiscordApi.Handlers.ModelHandlers;
 
 import KyleYannelli.DiscordBots.KLogger.LocalStorage.LocalStorage;
 import KyleYannelli.DiscordBots.KLogger.Models.Guild;
+import KyleYannelli.DiscordBots.KLogger.Parsers.GuildsParser;
 
 import java.io.IOException;
 
@@ -13,12 +14,12 @@ public class GuildHandler {
 
         try {
             // create Guild.json.block file to indicate that the file is being updated
-            LocalStorage.createFile(guild.getId() + ".guild.json.block");
+            forceBlockGuild(guild.getId());
 
             guild.save();
 
             // Guild json can now be opened by another (theoretical) thread, deleting blocking file
-            LocalStorage.deleteFile(guild.getId() + ".guild.json.block");
+            forceUnblockGuild(guild.getId());
         }
         catch (IOException e) {
             e.printStackTrace();
@@ -32,12 +33,12 @@ public class GuildHandler {
             while(!canUseGuild(guild));
 
             // create Guild.json.block file to indicate that the file is being updated
-            LocalStorage.createFile(guild.getId() + ".guild.json.block");
+            forceBlockGuild(guild.getId());
 
             LocalStorage.deleteFile(guild.getId() + ".guild.json");
 
             // Guild json can now be opened (although shouldn't) by another (theoretical) thread, deleting blocking file
-            LocalStorage.deleteFile(guild.getId() + ".guild.json.block");
+            forceUnblockGuild(guild.getId());
         }
         catch (Exception e) {
             try {
@@ -45,12 +46,12 @@ public class GuildHandler {
                 while(!canUseGuild(guild));
 
                 // create Guild.json.block file to indicate that the file is being updated
-                LocalStorage.createFile(guild.getId() + ".guild.json.block");
+                forceBlockGuild(guild.getId());
 
                 LocalStorage.deleteFile(guild.getId() + ".guild.json");
 
                 // Guild json can now be opened (although shouldn't) by another (theoretical) thread, deleting blocking file
-                LocalStorage.deleteFile(guild.getId() + ".guild.json.block");
+                forceUnblockGuild(guild.getId());
             }
             catch (Exception e2) {
                 System.out.println("Failed to delete guild " + guild.getId() + " after 2 attempts.\n Initial Attempt Error: " + e.getMessage() + "\n Second Attempt Error: " + e2.getMessage());
@@ -78,5 +79,33 @@ public class GuildHandler {
 
     public static boolean guildFileOpen(long guildId) {
         return LocalStorage.fileExists("src/main/resources/" + guildId + ".guild.json.block");
+    }
+
+    public static Guild getGuild(long guildId) throws IOException, InterruptedException {
+        return GuildsParser.parseGuild(guildId);
+    }
+
+    public static boolean blockGuild(long guildId) throws IOException, InterruptedException {
+        if(canUseGuild(guildId)) {
+            LocalStorage.createFile(guildId + ".guild.json.block");
+            return true;
+        }
+        return false;
+    }
+
+    public static boolean unblockGuild(long guildId) throws IOException, InterruptedException {
+        if(canUseGuild(guildId)) {
+            LocalStorage.deleteFile(guildId + ".guild.json.block");
+            return true;
+        }
+        return false;
+    }
+
+    public static void forceBlockGuild(long guildId) throws IOException, InterruptedException {
+        LocalStorage.createFile(guildId + ".guild.json.block");
+    }
+
+    public static void forceUnblockGuild(long guildId) throws IOException, InterruptedException {
+        LocalStorage.deleteFile(guildId + ".guild.json.block");
     }
 }

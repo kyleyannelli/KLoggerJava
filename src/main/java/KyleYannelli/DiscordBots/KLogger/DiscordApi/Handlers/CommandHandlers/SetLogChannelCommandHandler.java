@@ -3,6 +3,7 @@ package KyleYannelli.DiscordBots.KLogger.DiscordApi.Handlers.CommandHandlers;
 import org.javacord.api.DiscordApi;
 import org.javacord.api.entity.channel.ChannelType;
 import org.javacord.api.entity.channel.ServerChannel;
+import org.javacord.api.entity.permission.PermissionType;
 import org.javacord.api.event.interaction.SlashCommandCreateEvent;
 import org.javacord.api.interaction.Interaction;
 import org.javacord.api.interaction.SlashCommandInteractionOption;
@@ -29,6 +30,12 @@ public class SetLogChannelCommandHandler implements CommandHandler {
                     // behavior of responses are always private
                     .respondLater(true)
                     .thenAccept(interactionAcceptance -> {
+                        if(!slashCommandCreateEvent
+                                .getSlashCommandInteraction()
+                                .getServer().get()
+                                .hasPermission(slashCommandCreateEvent.getSlashCommandInteraction().getUser(), PermissionType.ADMINISTRATOR)) {
+                            interactionAcceptance.setContent("You do not have permission to turn set the logging channel.");
+                        }
                         handleInteractionAcceptance(interactionAcceptance, slashCommandCreateEvent.getInteraction());
                     });
         }

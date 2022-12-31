@@ -3,6 +3,7 @@ package KyleYannelli.DiscordBots.KLogger.DiscordApi.Handlers.CommandHandlers;
 import KyleYannelli.DiscordBots.KLogger.DiscordApi.Handlers.ModelHandlers.GuildHandler;
 import KyleYannelli.DiscordBots.KLogger.Models.Guild;
 import org.javacord.api.DiscordApi;
+import org.javacord.api.entity.permission.PermissionType;
 import org.javacord.api.event.interaction.SlashCommandCreateEvent;
 import org.javacord.api.interaction.Interaction;
 import org.javacord.api.interaction.callback.InteractionOriginalResponseUpdater;
@@ -27,6 +28,12 @@ public class TurnOnCommandHandler implements CommandHandler {
                     // behavior of responses are always private
                     .respondLater(true)
                     .thenAccept(interactionAcceptance -> {
+                        if(!slashCommandCreateEvent
+                                .getSlashCommandInteraction()
+                                .getServer().get()
+                                .hasPermission(slashCommandCreateEvent.getSlashCommandInteraction().getUser(), PermissionType.ADMINISTRATOR)) {
+                            interactionAcceptance.setContent("You do not have permission to turn on logging.");
+                        }
                         handleInteractionAcceptance(interactionAcceptance, slashCommandCreateEvent.getInteraction());
                     });
         }
