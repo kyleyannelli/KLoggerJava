@@ -8,6 +8,10 @@ import org.javacord.api.entity.message.Message;
 import org.javacord.api.entity.message.embed.EmbedBuilder;
 import org.javacord.api.entity.user.User;
 import org.javacord.api.event.message.MessageDeleteEvent;
+import org.javacord.api.event.message.MessageEditEvent;
+
+import java.io.IOException;
+import java.util.concurrent.ExecutionException;
 
 public class MessageEvents {
     public static void listenMessageDeletionEvent(DiscordApi api) {
@@ -43,5 +47,38 @@ public class MessageEvents {
             }
         });
         thread.start();
+    }
+
+    public static void listenMessageEditEvent(DiscordApi api) {
+        api.addMessageEditListener(event -> {
+            try {
+                handleMessageEditEvent(api, event);
+            }
+            catch (Exception e) {
+                System.out.println("Error handling message edit " + e.getMessage());
+            }
+        });
+    }
+
+    private static void handleMessageEditEvent(DiscordApi api, MessageEditEvent event) throws ExecutionException, InterruptedException, IOException {
+        User actionUser = api
+                .getServerById(
+                        event.getServer().get()
+                                .getId()
+                ).get()
+                .getAuditLog(1).get()
+                .getEntries().get(0)
+                .getUser().get();
+        Message oldMessage = event.getOldMessage().orElse(null);
+        Message newMessage = api.getMessageById(event.getMessageId(), event.getChannel()).get();
+        Guild guild = GuildHandler.getGuild(event.getServer().get().getId());
+        EmbedBuilder embedBuilder = EmbedLogMessageCreator
+                .createEditedMessageEmbedLog(
+                        oldMessage, newMessage, newMessage.getAuthor(), actionUser
+                );
+        if(guild.isLogging() && guild.getLoggingChannelId() != -1) {
+            api.getTextChannelById(guild.getLoggingChannelId()).get()
+                    .sendMessage(embedBuilder);
+        }
     }
 }

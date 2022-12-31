@@ -50,6 +50,7 @@ public class Bot {
 
         // messages
         MessageEvents.listenMessageDeletionEvent(discordApi);
+        MessageEvents.listenMessageEditEvent(discordApi);
     }
 
     public boolean deleteOldCommandsAndAddNew(ArrayList<SlashCommandBuilder> slashCommandArrayList) {
