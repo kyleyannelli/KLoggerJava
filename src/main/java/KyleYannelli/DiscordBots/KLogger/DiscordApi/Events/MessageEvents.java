@@ -61,16 +61,9 @@ public class MessageEvents {
     }
 
     private static void handleMessageEditEvent(DiscordApi api, MessageEditEvent event) throws ExecutionException, InterruptedException, IOException {
-        User actionUser = api
-                .getServerById(
-                        event.getServer().get()
-                                .getId()
-                ).get()
-                .getAuditLog(1).get()
-                .getEntries().get(0)
-                .getUser().get();
         Message oldMessage = event.getOldMessage().orElse(null);
         Message newMessage = api.getMessageById(event.getMessageId(), event.getChannel()).get();
+        User actionUser = newMessage.getAuthor().asUser().get();
         Guild guild = GuildHandler.getGuild(event.getServer().get().getId());
         EmbedBuilder embedBuilder = EmbedLogMessageCreator
                 .createEditedMessageEmbedLog(
