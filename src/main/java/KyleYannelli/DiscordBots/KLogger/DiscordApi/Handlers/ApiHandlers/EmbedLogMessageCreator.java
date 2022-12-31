@@ -5,6 +5,8 @@ import org.javacord.api.entity.message.Message;
 import org.javacord.api.entity.message.MessageAuthor;
 import org.javacord.api.entity.message.embed.EmbedBuilder;
 import org.javacord.api.entity.user.User;
+import org.javacord.api.event.server.member.ServerMemberJoinEvent;
+import org.javacord.api.event.server.member.ServerMemberLeaveEvent;
 import org.javacord.api.event.user.UserChangeNicknameEvent;
 
 import java.awt.*;
@@ -80,5 +82,21 @@ public class EmbedLogMessageCreator {
                 .addField("New Nickname", changeNicknameEvent.getNewNickname().isPresent() ? changeNicknameEvent.getNewNickname().get() : "None")
                 .setAuthor(changeNicknameEvent.getUser().getDiscriminatedName(), null, "https://" + changeNicknameEvent.getUser().getAvatar().getUrl().getHost() + changeNicknameEvent.getUser().getAvatar().getUrl().getPath())
                 .setColor(Color.YELLOW);
+    }
+
+    public static EmbedBuilder createJoinedServerEmbedLog(ServerMemberJoinEvent memberJoinEvent) {
+        return new EmbedBuilder()
+                .setTitle("Joined Server")
+                .addField("User", memberJoinEvent.getUser().getDiscriminatedName())
+                .setAuthor(memberJoinEvent.getUser().getDiscriminatedName(), null, "https://" + memberJoinEvent.getUser().getAvatar().getUrl().getHost() + memberJoinEvent.getUser().getAvatar().getUrl().getPath())
+                .setColor(Color.BLUE);
+    }
+
+    public static EmbedBuilder createLeaveServerEmbedLog(ServerMemberLeaveEvent memberLeaveEvent) {
+        return new EmbedBuilder()
+                .setTitle("Left Server")
+                .addField("User", memberLeaveEvent.getUser().getDiscriminatedName())
+                .setAuthor(memberLeaveEvent.getUser().getDiscriminatedName(), null, "https://" + memberLeaveEvent.getUser().getAvatar().getUrl().getHost() + memberLeaveEvent.getUser().getAvatar().getUrl().getPath())
+                .setColor(Color.BLUE);
     }
 }

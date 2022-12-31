@@ -55,6 +55,8 @@ public class Bot {
 
         // users
         UserEvents.listenUserChangeNicknameEvent(discordApi);
+        UserEvents.listenUserJoinEvent(discordApi);
+        UserEvents.listenUserLeaveEvent(discordApi);
     }
 
     public boolean deleteOldCommandsAndAddNew(ArrayList<SlashCommandBuilder> slashCommandArrayList) {
