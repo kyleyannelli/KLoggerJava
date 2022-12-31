@@ -13,7 +13,7 @@ public class EmbedLogMessageCreator {
                 .setTitle("Deleted A Message")
                 .addField("Channel", deletedMessage.getServerTextChannel().get().getName())
                 .addField("Author", messageAuthor.getDiscriminatedName())
-                .addField("Message", deletedMessage.getContent().substring(0, 1000) + "...")
+                .addField("Message", deletedMessage.getContent().length() > 1000 ? deletedMessage.getContent().substring(0, 1000) + "..." : deletedMessage.getContent())
                 .setAuthor(actionUser.getDiscriminatedName(), null, "https://" + actionUser.getAvatar().getUrl().getHost() + actionUser.getAvatar().getUrl().getPath())
                 .setColor(Color.RED)
                 :
@@ -31,8 +31,10 @@ public class EmbedLogMessageCreator {
                     .setTitle("Edited A Message")
                     .addField("Channel", oldMessage.getServerTextChannel().get().getName())
                     .addField("Author", messageAuthor.getDiscriminatedName())
-                    .addField("Old Message", oldMessage.getContent().substring(0, 1000) + "...")
-                    .addField("New Message", newMessage.getContent().substring(0, 1000) + "...")
+                    // old message substring if over 1000 chars
+                    .addField("Old Message", oldMessage.getContent().length() > 1000 ? oldMessage.getContent().substring(0, 1000) + "..." : oldMessage.getContent())
+                    // new message substring if over 1000 chars
+                    .addField("New Message", newMessage.getContent().length() > 1000 ? newMessage.getContent().substring(0, 1000) + "..." : newMessage.getContent())
                     .setAuthor(actionUser.getDiscriminatedName(), null, "https://" + actionUser.getAvatar().getUrl().getHost() + actionUser.getAvatar().getUrl().getPath())
                     .setColor(Color.YELLOW);
         }
@@ -43,7 +45,8 @@ public class EmbedLogMessageCreator {
                     .addField("Channel", newMessage.getServerTextChannel().get().getName())
                     .addField("Author", messageAuthor.getDiscriminatedName())
                     .addField("Old Message", "Message was not in cache, so the bot was unable to retrieve any data.")
-                    .addField("New Message", newMessage.getContent().substring(0, 1000) + "...")
+                    // new message substring if over 1000 chars
+                    .addField("New Message", newMessage.getContent().length() > 1000 ? newMessage.getContent().substring(0, 1000) + "..." : newMessage.getContent())
                     .setAuthor(actionUser.getDiscriminatedName(), null, "https://" + actionUser.getAvatar().getUrl().getHost() + actionUser.getAvatar().getUrl().getPath())
                     .setColor(Color.YELLOW);
         }
@@ -53,7 +56,8 @@ public class EmbedLogMessageCreator {
                     .setTitle("Edited A Message")
                     .addField("Channel", oldMessage.getServerTextChannel().get().getName())
                     .addField("Author", messageAuthor.getDiscriminatedName())
-                    .addField("Old Message", oldMessage.getContent().substring(0, 1000) + "...")
+                    // old message substring if over 1000 chars
+                    .addField("Old Message", oldMessage.getContent().length() > 1000 ? oldMessage.getContent().substring(0, 1000) + "..." : oldMessage.getContent())
                     .addField("New Message", "Message was not in cache, so the bot was unable to retrieve any data.")
                     .setAuthor(actionUser.getDiscriminatedName(), null, "https://" + actionUser.getAvatar().getUrl().getHost() + actionUser.getAvatar().getUrl().getPath())
                     .setColor(Color.YELLOW);
