@@ -19,7 +19,7 @@ public class EmbedLogMessageCreator {
                 :
                 new EmbedBuilder()
                         .setTitle("Deleted A Message")
-                        .addField("Unknown", "Message was created before the bot was running. Deleted messages from before the bot was running are not in the cache, therefore the content is not available.")
+                        .addField("Unknown", "Message was not in cache, so the bot was unable to retrieve any data.")
                         .setAuthor(actionUser.getDiscriminatedName(), null, "https://" + actionUser.getAvatar().getUrl().getHost() + actionUser.getAvatar().getUrl().getPath())
                         .setColor(Color.RED);
     }
