@@ -87,7 +87,6 @@ public class EmbedLogMessageCreator {
     public static EmbedBuilder createJoinedServerEmbedLog(ServerMemberJoinEvent memberJoinEvent) {
         return new EmbedBuilder()
                 .setTitle("Joined Server")
-                .addField("User", memberJoinEvent.getUser().getDiscriminatedName())
                 .setAuthor(memberJoinEvent.getUser().getDiscriminatedName(), null, "https://" + memberJoinEvent.getUser().getAvatar().getUrl().getHost() + memberJoinEvent.getUser().getAvatar().getUrl().getPath())
                 .setColor(Color.BLUE);
     }
@@ -95,8 +94,7 @@ public class EmbedLogMessageCreator {
     public static EmbedBuilder createLeaveServerEmbedLog(ServerMemberLeaveEvent memberLeaveEvent) {
         return new EmbedBuilder()
                 .setTitle("Left Server")
-                .addField("User", memberLeaveEvent.getUser().getDiscriminatedName())
                 .setAuthor(memberLeaveEvent.getUser().getDiscriminatedName(), null, "https://" + memberLeaveEvent.getUser().getAvatar().getUrl().getHost() + memberLeaveEvent.getUser().getAvatar().getUrl().getPath())
-                .setColor(Color.BLUE);
+                .setColor(Color.BLACK);
     }
 }
