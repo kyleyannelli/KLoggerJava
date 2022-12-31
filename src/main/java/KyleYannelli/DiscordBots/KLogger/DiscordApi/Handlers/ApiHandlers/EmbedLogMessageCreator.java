@@ -30,7 +30,7 @@ public class EmbedLogMessageCreator {
         if(oldMessage != null && newMessage != null) {
             // find sections of the message that have been edited, put them in a string separated by ...
             String editedMessage = StringUtils.difference(oldMessage.getContent(), newMessage.getContent());
-            String originalContent = StringUtils.difference(editedMessage, oldMessage.getContent());
+            String originalContent = StringUtils.difference(oldMessage.getContent(), editedMessage);
             return new EmbedBuilder()
                     .setTitle("Edited A Message")
                     .addField("Channel", oldMessage.getServerTextChannel().get().getName())
