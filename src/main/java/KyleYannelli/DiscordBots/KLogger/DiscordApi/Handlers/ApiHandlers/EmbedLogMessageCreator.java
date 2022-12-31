@@ -5,6 +5,7 @@ import org.javacord.api.entity.message.Message;
 import org.javacord.api.entity.message.MessageAuthor;
 import org.javacord.api.entity.message.embed.EmbedBuilder;
 import org.javacord.api.entity.user.User;
+import org.javacord.api.event.user.UserChangeNicknameEvent;
 
 import java.awt.*;
 
@@ -30,12 +31,10 @@ public class EmbedLogMessageCreator {
         if(oldMessage != null && newMessage != null) {
             // find sections of the message that have been edited, put them in a string separated by ...
             String editedMessage = StringUtils.difference(oldMessage.getContent(), newMessage.getContent());
-            String originalContent = StringUtils.difference(oldMessage.getContent(), editedMessage);
             return new EmbedBuilder()
                     .setTitle("Edited A Message")
                     .addField("Channel", oldMessage.getServerTextChannel().get().getName())
                     .addField("Author", messageAuthor.getDiscriminatedName())
-                    .addField("Original Content", originalContent.length() > 1000 ? originalContent.substring(0, 1000) + "..." : originalContent)
                     .addField("Changed Content", editedMessage.length() > 1000 ? editedMessage.substring(0, 1000) + "..." : editedMessage)
                     .setAuthor(actionUser.getDiscriminatedName(), null, "https://" + actionUser.getAvatar().getUrl().getHost() + actionUser.getAvatar().getUrl().getPath())
                     .setColor(Color.YELLOW);
@@ -71,5 +70,15 @@ public class EmbedLogMessageCreator {
                     .setAuthor(actionUser.getDiscriminatedName(), null, "https://" + actionUser.getAvatar().getUrl().getHost() + actionUser.getAvatar().getUrl().getPath())
                     .setColor(Color.YELLOW);
         }
+    }
+
+    public static EmbedBuilder createChangedNicknameEmbedLog(UserChangeNicknameEvent changeNicknameEvent) {
+        return new EmbedBuilder()
+                .setTitle("Changed Nickname")
+                .addField("User", changeNicknameEvent.getUser().getDiscriminatedName())
+                .addField("Old Nickname", changeNicknameEvent.getOldNickname().isPresent() ? changeNicknameEvent.getOldNickname().get() : "None")
+                .addField("New Nickname", changeNicknameEvent.getNewNickname().isPresent() ? changeNicknameEvent.getNewNickname().get() : "None")
+                .setAuthor(changeNicknameEvent.getUser().getDiscriminatedName(), null, "https://" + changeNicknameEvent.getUser().getAvatar().getUrl().getHost() + changeNicknameEvent.getUser().getAvatar().getUrl().getPath())
+                .setColor(Color.YELLOW);
     }
 }
