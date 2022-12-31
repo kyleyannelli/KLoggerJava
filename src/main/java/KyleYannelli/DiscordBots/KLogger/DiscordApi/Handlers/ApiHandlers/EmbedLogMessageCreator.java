@@ -1,5 +1,6 @@
 package KyleYannelli.DiscordBots.KLogger.DiscordApi.Handlers.ApiHandlers;
 
+import org.apache.commons.lang3.StringUtils;
 import org.javacord.api.entity.message.Message;
 import org.javacord.api.entity.message.MessageAuthor;
 import org.javacord.api.entity.message.embed.EmbedBuilder;
@@ -27,14 +28,15 @@ public class EmbedLogMessageCreator {
     public static EmbedBuilder createEditedMessageEmbedLog(Message oldMessage, Message newMessage, MessageAuthor messageAuthor, User actionUser) {
         // if old message && new message are not null
         if(oldMessage != null && newMessage != null) {
+            // find sections of the message that have been edited, put them in a string separated by ...
+            String editedMessage = StringUtils.difference(oldMessage.getContent(), newMessage.getContent());
+            String originalContent = StringUtils.difference(editedMessage, oldMessage.getContent());
             return new EmbedBuilder()
                     .setTitle("Edited A Message")
                     .addField("Channel", oldMessage.getServerTextChannel().get().getName())
                     .addField("Author", messageAuthor.getDiscriminatedName())
-                    // old message substring if over 1000 chars
-                    .addField("Old Message", oldMessage.getContent().length() > 1000 ? oldMessage.getContent().substring(0, 1000) + "..." : oldMessage.getContent())
-                    // new message substring if over 1000 chars
-                    .addField("New Message", newMessage.getContent().length() > 1000 ? newMessage.getContent().substring(0, 1000) + "..." : newMessage.getContent())
+                    .addField("Original Content", originalContent.length() > 1000 ? originalContent.substring(0, 1000) + "..." : originalContent)
+                    .addField("Changed Content", editedMessage.length() > 1000 ? editedMessage.substring(0, 1000) + "..." : editedMessage)
                     .setAuthor(actionUser.getDiscriminatedName(), null, "https://" + actionUser.getAvatar().getUrl().getHost() + actionUser.getAvatar().getUrl().getPath())
                     .setColor(Color.YELLOW);
         }
