@@ -7,6 +7,7 @@ import org.javacord.api.entity.message.embed.EmbedBuilder;
 import org.javacord.api.entity.user.User;
 import org.javacord.api.event.server.member.ServerMemberJoinEvent;
 import org.javacord.api.event.server.member.ServerMemberLeaveEvent;
+import org.javacord.api.event.user.UserChangeNameEvent;
 import org.javacord.api.event.user.UserChangeNicknameEvent;
 
 import java.awt.*;
@@ -81,6 +82,16 @@ public class EmbedLogMessageCreator {
                 .addField("Old Nickname", changeNicknameEvent.getOldNickname().isPresent() ? changeNicknameEvent.getOldNickname().get() : "None")
                 .addField("New Nickname", changeNicknameEvent.getNewNickname().isPresent() ? changeNicknameEvent.getNewNickname().get() : "None")
                 .setAuthor(changeNicknameEvent.getUser().getDiscriminatedName(), null, "https://" + changeNicknameEvent.getUser().getAvatar().getUrl().getHost() + changeNicknameEvent.getUser().getAvatar().getUrl().getPath())
+                .setColor(Color.YELLOW);
+    }
+
+    public static EmbedBuilder createChangedNameEmbedLog(UserChangeNameEvent changeNameEvent) {
+        return new EmbedBuilder()
+                .setTitle("Changed Name")
+                .addField("User", changeNameEvent.getUser().getDiscriminatedName())
+                .addField("Old Name", changeNameEvent.getOldName())
+                .addField("New Name", changeNameEvent.getNewName())
+                .setAuthor(changeNameEvent.getUser().getDiscriminatedName(), null, "https://" + changeNameEvent.getUser().getAvatar().getUrl().getHost() + changeNameEvent.getUser().getAvatar().getUrl().getPath())
                 .setColor(Color.YELLOW);
     }
 

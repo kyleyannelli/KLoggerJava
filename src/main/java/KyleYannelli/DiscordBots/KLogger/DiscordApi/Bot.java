@@ -9,6 +9,7 @@ import KyleYannelli.DiscordBots.KLogger.DiscordApi.Handlers.CommandHandlers.Turn
 import io.github.cdimascio.dotenv.Dotenv;
 import org.javacord.api.DiscordApi;
 import org.javacord.api.DiscordApiBuilder;
+import org.javacord.api.entity.user.User;
 import org.javacord.api.interaction.SlashCommandBuilder;
 
 import java.util.ArrayList;
@@ -55,6 +56,7 @@ public class Bot {
 
         // users
         UserEvents.listenUserChangeNicknameEvent(discordApi);
+        UserEvents.listenUserChangeNameEvent(discordApi);
         UserEvents.listenUserJoinEvent(discordApi);
         UserEvents.listenUserLeaveEvent(discordApi);
     }

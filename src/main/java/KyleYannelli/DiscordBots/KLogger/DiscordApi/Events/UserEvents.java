@@ -7,6 +7,7 @@ import org.javacord.api.DiscordApi;
 import org.javacord.api.entity.user.User;
 import org.javacord.api.event.server.member.ServerMemberJoinEvent;
 import org.javacord.api.event.server.member.ServerMemberLeaveEvent;
+import org.javacord.api.event.user.UserChangeNameEvent;
 import org.javacord.api.event.user.UserChangeNicknameEvent;
 
 public class UserEvents {
@@ -30,6 +31,33 @@ public class UserEvents {
             catch (Exception e) {
                 System.out.println("Error handling user change nickname " + e.getMessage());
             }
+        });
+        thread.start();
+    }
+
+    public static void listenUserChangeNameEvent(DiscordApi api) {
+        api.addUserChangeNameListener(event -> {
+            handleUserChangeNameEvent(api, event);
+        });
+    }
+
+    private static void handleUserChangeNameEvent(DiscordApi discordApi, UserChangeNameEvent event) {
+        Thread thread = new Thread(() -> {
+            // for each server the user and the bot are in
+            event.getUser().getMutualServers().forEach(mutualGuild -> {
+                try {
+                    Guild guild = GuildHandler.getGuild(mutualGuild.getId());
+                    if(guild.isLogging() && guild.getLoggingChannelId() != -1) {
+                        discordApi.getTextChannelById(guild.getLoggingChannelId()).get()
+                                .sendMessage(
+                                        EmbedLogMessageCreator.createChangedNameEmbedLog(event)
+                                );
+                    }
+                }
+                catch (Exception e) {
+                    System.out.println("Error handling user change name " + e.getMessage());
+                }
+            });
         });
         thread.start();
     }
