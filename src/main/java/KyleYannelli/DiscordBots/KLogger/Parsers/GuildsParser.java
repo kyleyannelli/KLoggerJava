@@ -32,8 +32,9 @@ public class GuildsParser {
 
 
         JSONArray guildJsonArray = new JSONArray(LocalStorage.loadFileToString(filePath));
-        Long currentGuildId = guildJsonArray.getJSONArray(0).getJSONObject(0).getLong("GuildDiscordId");
-        Boolean currentGuildIsLogging = guildJsonArray.getJSONArray(0).getJSONObject(1).getBoolean("IsLogging");
-        return new Guild(currentGuildId, currentGuildIsLogging);
+        Long currentGuildId = guildJsonArray.getJSONObject(0).getLong("GuildDiscordId");
+        Boolean currentGuildIsLogging = guildJsonArray.getJSONObject(2).getBoolean("IsLogging");
+        Channel currentGuildLoggingChannel = new Channel(guildJsonArray.getJSONObject(1).getLong("LoggingChannelDiscordId"));
+        return new Guild(currentGuildId, currentGuildIsLogging, currentGuildLoggingChannel);
     }
 }

@@ -21,6 +21,10 @@ public class Guild extends Model {
         this.loggingChannel = loggingChannel;
     }
 
+    public long getLoggingChannelId() {
+        return loggingChannel.getId();
+    }
+
     public long getId() {
         return guildId;
     }

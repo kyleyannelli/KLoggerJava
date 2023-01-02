@@ -1,12 +1,15 @@
 package KyleYannelli.DiscordBots.KLogger.DiscordApi;
 
 import KyleYannelli.DiscordBots.KLogger.DiscordApi.Events.GuildEvents;
+import KyleYannelli.DiscordBots.KLogger.DiscordApi.Events.MessageEvents;
+import KyleYannelli.DiscordBots.KLogger.DiscordApi.Events.UserEvents;
 import KyleYannelli.DiscordBots.KLogger.DiscordApi.Handlers.CommandHandlers.SetLogChannelCommandHandler;
 import KyleYannelli.DiscordBots.KLogger.DiscordApi.Handlers.CommandHandlers.TurnOffCommandHandler;
 import KyleYannelli.DiscordBots.KLogger.DiscordApi.Handlers.CommandHandlers.TurnOnCommandHandler;
 import io.github.cdimascio.dotenv.Dotenv;
 import org.javacord.api.DiscordApi;
 import org.javacord.api.DiscordApiBuilder;
+import org.javacord.api.entity.user.User;
 import org.javacord.api.interaction.SlashCommandBuilder;
 
 import java.util.ArrayList;
@@ -39,10 +42,23 @@ public class Bot {
         SetLogChannelCommandHandler setLogChannelCommandHandler = new SetLogChannelCommandHandler();
         setLogChannelCommandHandler.handle(discordApi);
 
-        // handle events
+        /**
+         * Handle Events
+         */
+        // guilds
         GuildEvents.handleJoinGuildEvent(discordApi);
         GuildEvents.handleLeaveGuildEvent(discordApi);
         GuildEvents.handleBotStartUp(discordApi);
+
+        // messages
+        MessageEvents.listenMessageDeletionEvent(discordApi);
+        MessageEvents.listenMessageEditEvent(discordApi);
+
+        // users
+        UserEvents.listenUserChangeNicknameEvent(discordApi);
+        UserEvents.listenUserChangeNameEvent(discordApi);
+        UserEvents.listenUserJoinEvent(discordApi);
+        UserEvents.listenUserLeaveEvent(discordApi);
     }
 
     public boolean deleteOldCommandsAndAddNew(ArrayList<SlashCommandBuilder> slashCommandArrayList) {
