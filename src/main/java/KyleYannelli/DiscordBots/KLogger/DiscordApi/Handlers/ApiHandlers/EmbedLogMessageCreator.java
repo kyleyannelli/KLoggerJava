@@ -3,6 +3,7 @@ package KyleYannelli.DiscordBots.KLogger.DiscordApi.Handlers.ApiHandlers;
 import org.apache.commons.lang3.StringUtils;
 import org.javacord.api.entity.message.Message;
 import org.javacord.api.entity.message.MessageAuthor;
+import org.javacord.api.entity.message.embed.Embed;
 import org.javacord.api.entity.message.embed.EmbedBuilder;
 import org.javacord.api.entity.user.User;
 import org.javacord.api.event.server.member.ServerMemberJoinEvent;
@@ -13,6 +14,37 @@ import org.javacord.api.event.user.UserChangeNicknameEvent;
 import java.awt.*;
 
 public class EmbedLogMessageCreator {
+    public static EmbedBuilder embedToEmbedBuilder(Embed embed) {
+        EmbedBuilder embedBuilder = new EmbedBuilder();
+        if(embed.getTitle().isPresent()) embedBuilder.setTitle(embed.getTitle().get());
+        if(embed.getDescription().isPresent()) embedBuilder.setDescription(embed.getDescription().get());
+        if(embed.getFooter().isPresent()) embedBuilder.setFooter(embed.getFooter().get().getText().orElse(""));
+        if(embed.getTimestamp().isPresent()) embedBuilder.setTimestamp(embed.getTimestamp().get());
+        if(embed.getThumbnail().isPresent()) embedBuilder.setThumbnail(embed.getThumbnail().get().getUrl().toString());
+        if(embed.getColor().isPresent()) embedBuilder.setColor(embed.getColor().get());
+        if(embed.getImage().isPresent()) embedBuilder.setImage(embed.getImage().get().getUrl().toString());
+        if(embed.getAuthor().isPresent()) {
+            if(embed.getAuthor().get().getIconUrl().isPresent()) {
+                embedBuilder.setAuthor(
+                        embed.getAuthor().get().getName(),
+                        null,
+                        embed.getAuthor().get().getIconUrl().get().toString()
+                );
+            }
+            else {
+                embedBuilder.setAuthor(
+                        embed.getAuthor().get().getName(),
+                        null,
+                        "https://" + embed.getAuthor().get().getIconUrl().get().getHost() + embed.getAuthor().get().getIconUrl().get().getPath()
+                );
+            }
+        }
+        // for each field in the embed
+        embed.getFields().forEach(field -> {
+            embedBuilder.addField(field.getName(), field.getValue());
+        });
+        return embedBuilder;
+    }
     public static EmbedBuilder createDeletedMessageEmbedLog(Message deletedMessage, MessageAuthor messageAuthor, User actionUser) {
         return deletedMessage != null ? new EmbedBuilder()
                 .setTitle("Deleted A Message")

@@ -38,8 +38,21 @@ public class MessageEvents {
                                 deletedMessage, deletedMessage != null ? deletedMessage.getAuthor() : null, actionUser
                         );
                 if(guild.isLogging() && guild.getLoggingChannelId() != -1) {
-                    api.getTextChannelById(guild.getLoggingChannelId()).get()
-                            .sendMessage(embedBuilder);
+                    // if the message was sent by this bot resend the message
+                    if(deletedMessage != null &&
+                            deletedMessage.getAuthor().getId() == api.getYourself().getId() &&
+                            deletedMessage.getEmbeds().size() > 0) {
+                        api.getTextChannelById(guild.getLoggingChannelId()).get()
+                                .sendMessage(
+                                        EmbedLogMessageCreator.embedToEmbedBuilder(
+                                                deletedMessage.getEmbeds().get(0)
+                                        )
+                                );
+                    }
+                    else {
+                        api.getTextChannelById(guild.getLoggingChannelId()).get()
+                                .sendMessage(embedBuilder);
+                    }
                 }
             }
             catch (Exception e) {
